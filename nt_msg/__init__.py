@@ -115,6 +115,16 @@ class ForwardedMessagesXMLElement(XMLElement):
     def xml_decode(cls, data):
         # TODO
         return ForwardedMessagesXMLElement()
+    
+
+@ElementRegistry.register(elem_id=11)
+class StickerElement(Element):
+    alt: str
+
+
+    @classmethod
+    def decode(cls, data):
+        return StickerElement(unk=data["80900"].decode())
 
 
 class Message(BaseModel):
