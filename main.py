@@ -1,8 +1,5 @@
-import lxml.etree
 import nt_msg
 import db
-from io import BytesIO
-from collections import Counter
 
 from pprint import pprint
 

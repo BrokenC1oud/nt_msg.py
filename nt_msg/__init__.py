@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import blackboxprotobuf
-import lxml.sax
 from pydantic import BaseModel
 from typing import List, Type, TypeVar
 import lxml.etree

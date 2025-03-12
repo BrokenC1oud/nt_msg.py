@@ -26,19 +26,23 @@ class PrivateMessage(Base):
     UNK_15: Mapped[str] = mapped_column("40090", Text)  # empty
     nick_name: Mapped[str] = mapped_column("40093", Text)  # only self, otherwise basically empty
     message_body: Mapped[bytes] = mapped_column("40800", LargeBinary)  # protobuf
-    reply_body: Mapped[bytes] = mapped_column("40900", LargeBinary)  # protobuf, the message replied to
+    # protobuf, the message replied to
+    reply_body: Mapped[bytes] = mapped_column("40900", LargeBinary)
     UNK_19: Mapped[int] = mapped_column("40105")
     UNK_20: Mapped[int] = mapped_column("40005")
-    timestamp_day: Mapped[int] = mapped_column("40058")  # time of the day the message was sent, in sec
+    # time of the day the message was sent, in sec
+    timestamp_day: Mapped[int] = mapped_column("40058")
     UNK_22: Mapped[int] = mapped_column("40006")
     UNK_23: Mapped[int] = mapped_column("40100")
-    UNK_24: Mapped[bytes] = mapped_column("40600", LargeBinary)  # protobuf, seem to be related to reply, idk
+    # protobuf, seem to be related to reply, idk
+    UNK_24: Mapped[bytes] = mapped_column("40600", LargeBinary)
     UNK_25: Mapped[int] = mapped_column("40060")
     UNK_26: Mapped[int] = mapped_column("40850")
     UNK_27: Mapped[int] = mapped_column("40851")
     UNK_28: Mapped[bytes] = mapped_column("40601", LargeBinary)  # always null
     UNK_29: Mapped[bytes] = mapped_column("40801", LargeBinary)  # protobuf
-    UNK_30: Mapped[bytes] = mapped_column("40605", LargeBinary)  # protobuf, insufficient resource, related with file?
+    # protobuf, insufficient resource, related with file?
+    UNK_30: Mapped[bytes] = mapped_column("40605", LargeBinary)
     contact_qq: Mapped[int] = mapped_column("40030")  # qq num
     sender_qq: Mapped[int] = mapped_column("40033")  # qq num
     UNK_33: Mapped[int] = mapped_column("40062")
@@ -64,22 +68,26 @@ class GroupMessage(Base):
     timestamp: Mapped[int] = mapped_column("40050")  # time message sent
     UNK_14: Mapped[int] = mapped_column("40052")
     UNK_15: Mapped[str] = mapped_column("40090", Text)  # empty
-    nick_name: Mapped[str] = mapped_column("40093", Text)  # sender's nickname, not guaranteed (maybe empty)
+    # sender's nickname, not guaranteed (maybe empty)
+    nick_name: Mapped[str] = mapped_column("40093", Text)
     message_body: Mapped[bytes] = mapped_column("40800", LargeBinary)  # protobuf
-    reply_body: Mapped[bytes] = mapped_column("40900", LargeBinary)  # protobuf, the message replied to
+    # protobuf, the message replied to
+    reply_body: Mapped[bytes] = mapped_column("40900", LargeBinary)
     UNK_19: Mapped[int] = mapped_column("40105")
     UNK_20: Mapped[int] = mapped_column("40005")
-    timestamp_day: Mapped[int] = mapped_column("40058")  # time of the day the message was sent, in sec
+    # time of the day the message was sent, in sec
+    timestamp_day: Mapped[int] = mapped_column("40058")
     UNK_22: Mapped[int] = mapped_column("40006")
     UNK_23: Mapped[int] = mapped_column("40100")
-    withdraw_status: Mapped[bytes] = mapped_column("40600", LargeBinary)  # protobuf, withdraw status
+    # protobuf, withdraw status
+    withdraw_status: Mapped[bytes] = mapped_column("40600", LargeBinary)
     UNK_25: Mapped[int] = mapped_column("40060")
     reply_to_seq: Mapped[int] = mapped_column("40850")  # seq of the message replying to
     UNK_27: Mapped[int] = mapped_column("40851")
     UNK_28: Mapped[bytes] = mapped_column("40601", LargeBinary)  # always null
     UNK_29: Mapped[bytes] = mapped_column("40801", LargeBinary)  # protobuf
-    UNK_30: Mapped[bytes] = mapped_column("40605", LargeBinary)  # protobuf, insufficient resource, related with
-                                                                            # file? always eae91300
+    # protobuf, insufficient resource, related with file? always eae91300
+    UNK_30: Mapped[bytes] = mapped_column("40605", LargeBinary)
     group_qq_3: Mapped[int] = mapped_column("40030")  # qq num
     sender_qq: Mapped[int] = mapped_column("40033")  # qq num
     UNK_33: Mapped[int] = mapped_column("40062")
