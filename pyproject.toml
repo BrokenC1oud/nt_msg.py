@@ -10,3 +10,8 @@ dependencies = [
     "pydantic>=2.10.6",
     "sqlalchemy>=2.0.38",
 ]
+
+[dependency-groups]
+dev = [
+    "pylint>=3.3.5",
+]

@@ -1,7 +1,7 @@
+from pprint import pprint
+
 import nt_msg
 import db
-
-from pprint import pprint
 
 
 def main():
