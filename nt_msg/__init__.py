@@ -25,8 +25,7 @@ class ElementRegistry:
     def decode(cls, data) -> E:
         try:
             return cls._decoders[data.get("45002")].decode(data)
-        except ValueError as e:
-            raise e
+        except ValueError:
             return UnsupportedElement(data=None)
 
 
