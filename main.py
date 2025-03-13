@@ -5,16 +5,9 @@ import db
 
 
 def main():
-    gms = db.session.query(db.GroupMessage)
-    for _ in gms:
-        try:
-            m = nt_msg.Message.from_db(_)
-        except Exception as e:
-            print(_.ID)
-            raise e
-        for __ in m.elements:
-            if isinstance(__, nt_msg.CallNotifyElement):
-                print(m)
+    gm_db = db.session.query(db.GroupMessage)[114514:191981]
+    messages = [nt_msg.Message.from_db(_) for _ in gm_db]
+    pprint(messages)
 
 
 if __name__ == "__main__":
