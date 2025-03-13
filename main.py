@@ -13,8 +13,9 @@ def main():
             print(_.ID)
             raise e
         for __ in m.elements:
-            if isinstance(__, nt_msg.VideoElement):
-                pprint(m)
+            if isinstance(__, nt_msg.UnsupportedElement):
+                if __.data:
+                    print(m)
 
 
 if __name__ == "__main__":

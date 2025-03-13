@@ -136,8 +136,8 @@ class AudioElement(Element):
 
 @ElementRegistry.register(elem_id=5)
 class VideoElement(Element):
-    filename: str
-    hash: str
+    filename: str | None
+    hash: str | None
 
 
     @classmethod
