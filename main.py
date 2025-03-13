@@ -1,7 +1,5 @@
 from pprint import pprint
 
-import blackboxprotobuf
-
 import nt_msg
 import db
 

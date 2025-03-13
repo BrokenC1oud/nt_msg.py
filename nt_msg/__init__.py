@@ -167,9 +167,18 @@ class SystemNotificationElement(Element):
 
 
 class WithdrawNotifyElement(SystemNotificationElement):
+    sender: str
+    withdrawer: str
+    suffix: str
+
+
     @classmethod
-    def decode(cls, data):
-        ...
+    def system_decode(cls, data):
+        return WithdrawNotifyElement(
+            sender=data.get("47705"),
+            withdrawer=data.get("47716"),
+            suffix=data.get("47713"),
+        )
     
 
     def __str__(self):
