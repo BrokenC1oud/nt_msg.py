@@ -180,7 +180,41 @@ class WithdrawNotifyElement(SystemNotificationElement):
 
     def __str__(self):
         return "撤回了一条消息"
+
+
+@ElementRegistry.register(elem_id=10)
+class AppElement(Element):
+    data: str
+
+
+    @classmethod
+    def decode(cls, data):
+        return AppElement(
+            data=data.get("47901").decode()
+        )
     
+
+    def __str__(self):
+        return "[应用消息]"
+    
+
+@ElementRegistry.register(elem_id=11)
+class StickerElement(Element):
+    alt: str | None
+    ID: str | None
+
+
+    @classmethod
+    def decode(cls, data):
+        return StickerElement(
+            alt=data["80900"].decode() if isinstance(data["80900"], bytes) else None,
+            ID=data["80903"].hex() if isinstance(data["80903"], bytes) else None,
+        )
+    
+
+    def __str__(self):
+        return self.alt if self.alt else ""
+
 
 @ElementRegistry.register(elem_id=16)
 class XMLElement(Element):
@@ -208,24 +242,6 @@ class ForwardedMessagesXMLElement(XMLElement):
 
     def __str__(self):
         return "[聊天记录]"
-    
-
-@ElementRegistry.register(elem_id=11)
-class StickerElement(Element):
-    alt: str | None
-    ID: str | None
-
-
-    @classmethod
-    def decode(cls, data):
-        return StickerElement(
-            alt=data["80900"].decode() if isinstance(data["80900"], bytes) else None,
-            ID=data["80903"].hex() if isinstance(data["80903"], bytes) else None,
-        )
-    
-
-    def __str__(self):
-        return self.alt if self.alt else ""
 
 
 class Message(BaseModel):

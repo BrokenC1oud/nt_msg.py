@@ -13,7 +13,7 @@ def main():
             print(_.ID)
             raise e
         for __ in m.elements:
-            if isinstance(__, nt_msg.SystemNotificationElement):
+            if isinstance(__, nt_msg.AppElement):
                 pprint(m)
 
 
