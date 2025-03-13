@@ -101,12 +101,37 @@ class Image(Element):
 
 @ElementRegistry.register(elem_id=3)
 class FileElement(Element):
+    hash: str | None
+    path: str | None
+
+
     @classmethod
     def decode(cls, data):
-        return FileElement()
+        return FileElement(
+            hash=hash.hex() if isinstance(hash:=data.get("45406"), bytes) else None,
+            path=path.decode() if isinstance(path:=data.get("45954"), bytes) else None,
+        )
 
     def __str__(self):
         return "[文件]"
+    
+
+@ElementRegistry.register(elem_id=4)
+class AudioElement(Element):
+    filename: str
+    hash: str | None
+
+
+    @classmethod
+    def decode(cls, data):
+        return AudioElement(
+            filename=data.get("45402"),
+            hash=hash.hex() if isinstance(hash:=data.get("45406"), bytes) else None,
+        )
+    
+
+    def __str__(self):
+        return "[语音消息]"
 
 
 @ElementRegistry.register(elem_id=6)

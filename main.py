@@ -14,8 +14,8 @@ def main():
             raise e
         for __ in m.elements:
             if isinstance(__, nt_msg.UnsupportedElement):
-                if __.data is None:
-                    pprint(m)
+                if __.data:
+                    print(m)
                     exit()
 
 
