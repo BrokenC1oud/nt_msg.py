@@ -134,6 +134,24 @@ class AudioElement(Element):
         return "[语音消息]"
 
 
+@ElementRegistry.register(elem_id=5)
+class VideoElement(Element):
+    filename: str
+    hash: str
+
+
+    @classmethod
+    def decode(cls, data):
+        return VideoElement(
+            filename=data.get("40402"),
+            hash=hash.hex() if isinstance(hash:=data.get("45406"), bytes) else None
+        )
+    
+
+    def __str__(self):
+        return "[视频消息]"
+
+
 @ElementRegistry.register(elem_id=6)
 class EmojiElement(Element):
     ID: int
