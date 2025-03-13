@@ -29,7 +29,7 @@ class ElementRegistry:
         try:
             return cls._decoders[data.get("45002")].decode(data)
         except ValueError as e:
-            return UnsupportedElement()
+            return UnsupportedElement(data=None)
 
 
 class Element(ABC, BaseModel):
@@ -38,6 +38,11 @@ class Element(ABC, BaseModel):
     @classmethod
     @abstractmethod
     def decode(cls, data) -> E:
+        raise NotImplementedError
+
+
+    @abstractmethod
+    def __str__(self):
         raise NotImplementedError
 
 
@@ -51,21 +56,29 @@ class UnsupportedElement(Element):
         return UnsupportedElement(data=data)
     
 
+    def __str__(self):
+        return "不支持的消息"
+    
+
 @ElementRegistry.register(elem_id=1)
 class Text(Element):
-    content: str
+    content: str | None
 
 
     @classmethod
     def decode(cls, data):
         if not isinstance(data.get("45101"), bytes):
-            return UnsupportedElement(data=None)
+            return Text(content=None)
         return Text(content=data["45101"].decode())
+    
+
+    def __str__(self):
+        return self.content
     
 
 @ElementRegistry.register(elem_id=2)
 class Image(Element):
-    filename: str
+    filename: str | None
     width: int
     height: int
     path: str | None
@@ -82,19 +95,85 @@ class Image(Element):
         else: alt = None
 
         return Image(
-            filename=data["45402"],
+            filename=filename if isinstance(filename:=(data["45402"]), str) else None,
             width=data["45411"],
             height=data["45412"],
             path=data.get("45812"),
             alt=alt,
         )
+    
+    
+    def __str__(self):
+        return self.alt if self.alt else ""
+
+
+@ElementRegistry.register(elem_id=6)
+class EmojiElement(Element):
+    ID: int
+
+
+    @classmethod
+    def decode(cls, data):
+        return EmojiElement(
+            ID=data.get("47601") # -> emoji.db / base_sys_emoji_table / 81211
+        )
+    
+    def __str__(self):
+        return "[Emoji表情]"
 
 
 @ElementRegistry.register(elem_id=7)
 class Reply(Element):
+    source_seq: int | None
+    source_sender_uin: str
+    source_sender_qq: int | None
+    source_time: int | None
+    source_content: 'Message'
+
+
     @classmethod
     def decode(cls, data):
-        return Reply()
+        return Reply(
+            source_seq=data.get("47402"),
+            source_sender_uin=("40020"),
+            source_sender_qq=data.get("47403"),
+            source_time=data.get("47404"),
+            source_content=Message.from_reply(data.get("47423"))
+        )
+    
+
+    def __str__(self):
+        return ""
+
+
+@ElementRegistry.register(elem_id=8)
+class SystemNotificationElement(Element):
+    @classmethod
+    def decode(cls, data):
+        # 47705 -> sender
+        # 47716 -> withdrawer
+        # 47713 -> suffix
+        # 49154 or 45003 -> type i guess (1 -> withdraw)
+        return WithdrawNotifyElement.system_decode(data)
+    
+
+    @classmethod
+    def system_decode(cls, data):
+        raise NotImplementedError
+    
+
+    def __str__(self):
+        return "[系统消息]"
+
+
+class WithdrawNotifyElement(SystemNotificationElement):
+    @classmethod
+    def decode(cls, data):
+        ...
+    
+
+    def __str__(self):
+        return "撤回了一条消息"
     
 
 @ElementRegistry.register(elem_id=16)
@@ -108,6 +187,10 @@ class XMLElement(Element):
     @classmethod
     def xml_decode(cls, data):
         raise NotImplementedError
+    
+
+    def __str__(self):
+        return ""
 
 
 class ForwardedMessagesXMLElement(XMLElement):
@@ -117,19 +200,31 @@ class ForwardedMessagesXMLElement(XMLElement):
         return ForwardedMessagesXMLElement()
     
 
+    def __str__(self):
+        return "[聊天记录]"
+    
+
 @ElementRegistry.register(elem_id=11)
 class StickerElement(Element):
-    alt: str
+    alt: str | None
+    ID: str | None
 
 
     @classmethod
     def decode(cls, data):
-        return StickerElement(unk=data["80900"].decode())
+        return StickerElement(
+            alt=data["80900"].decode() if isinstance(data["80900"], bytes) else None,
+            ID=data["80903"].hex() if isinstance(data["80903"], bytes) else None,
+        )
+    
+
+    def __str__(self):
+        return self.alt if self.alt else ""
 
 
 class Message(BaseModel):
-    ID: int
-    seq: int
+    ID: int | None
+    seq: int | None
     elements: List['Element']
 
 
@@ -149,3 +244,14 @@ class Message(BaseModel):
             seq=dbo.seq,
             elements=elements,
         )
+    
+
+    @classmethod
+    def from_reply(cls, embed) -> 'Message':
+        if embed is None:
+            embed = []
+        if isinstance(embed, dict):
+            embed = [embed]
+        
+        elements = [ElementRegistry.decode(_) for _ in embed]
+        return Message(ID=None, seq=None, elements=elements)
