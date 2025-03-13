@@ -13,9 +13,8 @@ def main():
             print(_.ID)
             raise e
         for __ in m.elements:
-            if isinstance(__, nt_msg.UnsupportedElement):
-                if __.data:
-                    print(m)
+            if isinstance(__, nt_msg.CallNotifyElement):
+                print(m)
 
 
 if __name__ == "__main__":

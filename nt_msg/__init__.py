@@ -221,6 +221,31 @@ class WithdrawNotifyElement(SystemNotificationElement):
 
     def __str__(self):
         return "撤回了一条消息"
+    
+
+@ElementRegistry.register(elem_id=9)
+class RedPackElement(Element):
+    greet: str
+    alt: str
+    skin_type: str | None
+
+
+    @classmethod
+    def decode(cls, data):
+        desc = data.get("48403")
+        # 48403 -> 48443 greet
+        #          48444 赶紧点击拆开吧
+        #          48445 QQ红包
+        #          48448 alt
+        # 48421 -> 5     skin_type
+        return RedPackElement(
+            greet=desc.get("48443"),
+            alt=desc.get("48448"),
+            skin_type=skin_type if isinstance(skin_type:=data.get("48421").get("5"), str) else None,
+        )
+    
+    def __str__(self):
+        return self.alt
 
 
 @ElementRegistry.register(elem_id=10)
@@ -298,6 +323,24 @@ class BotCardMobileElement(Element):
 
     def __str__(self):
         return "[Bot卡片]"
+    
+
+@ElementRegistry.register(elem_id=21)
+class CallNotifyElement(Element):
+    alt_1: str
+    alt_2: str
+
+
+    @classmethod
+    def decode(cls, data):
+        return CallNotifyElement(
+            alt_1=data.get("48153"),
+            alt_2=data.get("48157"),
+        )
+    
+
+    def __str__(self):
+        return self.alt_1
 
 
 class Message(BaseModel):
