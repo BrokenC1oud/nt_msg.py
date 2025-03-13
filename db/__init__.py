@@ -108,31 +108,31 @@ class StickerMapping(Base):
     ID: Mapped[str] = mapped_column("80920", primary_key=True)
     pack_id: Mapped[str] = mapped_column("80943", primary_key=True)
     alt: Mapped[str] = mapped_column("80921")
-    UNK_00: Mapped[str] = mapped_column("80922") # always empty
-    UNK_01: Mapped[int] = mapped_column("80923") # always 0
-    UNK_02: Mapped[int] = mapped_column("80924") # always 200
-    UNK_03: Mapped[int] = mapped_column("80925") # always 200
-    UNK_04: Mapped[int] = mapped_column("80926") # always 0
-    UNK_05: Mapped[str] = mapped_column("80927") # always empty
-    UNK_06: Mapped[int] = mapped_column("80928") # always 2
-    UNK_07: Mapped[str] = mapped_column("80929") # always empty
+    UNK_00: Mapped[str] = mapped_column("80922")  # always empty
+    UNK_01: Mapped[int] = mapped_column("80923")  # always 0
+    UNK_02: Mapped[int] = mapped_column("80924")  # always 200
+    UNK_03: Mapped[int] = mapped_column("80925")  # always 200
+    UNK_04: Mapped[int] = mapped_column("80926")  # always 0
+    UNK_05: Mapped[str] = mapped_column("80927")  # always empty
+    UNK_06: Mapped[int] = mapped_column("80928")  # always 2
+    UNK_07: Mapped[str] = mapped_column("80929")  # always empty
     # keyword maybe used to fast type a sticker, always a list of two same elements
     keyword: Mapped[str] = mapped_column("80930")
-    UNK_08: Mapped[str] = mapped_column("80931") # always empty
-    UNK_09: Mapped[int] = mapped_column("80932") # always 0
-    UNK_10: Mapped[int] = mapped_column("80933") # always 0
+    UNK_08: Mapped[str] = mapped_column("80931")  # always empty
+    UNK_09: Mapped[int] = mapped_column("80932")  # always 0
+    UNK_10: Mapped[int] = mapped_column("80933")  # always 0
     # protobuf, always b2c227095b20225b5d22205d0a, '[ "[]" ]'
     UNK_11: Mapped[bytes] = mapped_column("80934", LargeBinary)
-    UNK_12: Mapped[int] = mapped_column("80935") # always 0
-    UNK_13: Mapped[str] = mapped_column("80936") # always empty
-    UNK_14: Mapped[str] = mapped_column("80937") # always empty
-    UNK_15: Mapped[int] = mapped_column("80938") # always 0
-    UNK_16: Mapped[int] = mapped_column("80939") # always 0
-    UNK_17: Mapped[int] = mapped_column("80940", nullable=True) # always NULL
-    UNK_18: Mapped[str] = mapped_column("80941") # always empty
-    UNK_19: Mapped[str] = mapped_column("80942") # always empty
-    UNK_20: Mapped[str] = mapped_column("80602", nullable=True) # always NULL
-    UNK_21: Mapped[str] = mapped_column("80603", nullable=True) # always NULL
+    UNK_12: Mapped[int] = mapped_column("80935")  # always 0
+    UNK_13: Mapped[str] = mapped_column("80936")  # always empty
+    UNK_14: Mapped[str] = mapped_column("80937")  # always empty
+    UNK_15: Mapped[int] = mapped_column("80938")  # always 0
+    UNK_16: Mapped[int] = mapped_column("80939")  # always 0
+    UNK_17: Mapped[int] = mapped_column("80940", nullable=True)  # always NULL
+    UNK_18: Mapped[str] = mapped_column("80941")  # always empty
+    UNK_19: Mapped[str] = mapped_column("80942")  # always empty
+    UNK_20: Mapped[str] = mapped_column("80602", nullable=True)  # always NULL
+    UNK_21: Mapped[str] = mapped_column("80603", nullable=True)  # always NULL
 
 
 engine = create_engine("sqlite:///./nt_msg.decrypt.db")

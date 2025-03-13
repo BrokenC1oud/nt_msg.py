@@ -13,8 +13,10 @@ def main():
             print(_.ID)
             raise e
         for __ in m.elements:
-            if isinstance(__, nt_msg.AppElement):
-                pprint(m)
+            if isinstance(__, nt_msg.UnsupportedElement):
+                if __.data is None:
+                    pprint(m)
+                    exit()
 
 
 if __name__ == "__main__":
