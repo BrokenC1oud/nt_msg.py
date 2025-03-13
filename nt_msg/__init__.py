@@ -7,14 +7,45 @@ from collections import defaultdict
 
 from db import GroupMessage
 
-E = TypeVar('E', bound="Element")
+E = TypeVar("E", bound="Element")
 
 
 class ElementRegistry:
+    """
+    A registry for managing and decoding elements based on their IDs.
+
+    Attributes:
+        _decoders (defaultdict): A dictionary mapping element IDs to their corresponding decoder classes.
+
+    Methods:
+        register(elem_id: int) -> callable:
+            A class method that registers a decoder class for a given element ID.
+
+        decode(data) -> E:
+            A class method that decodes the given data using the registered decoder class for the element ID.
+    """
+
     _decoders = defaultdict(lambda: UnsupportedElement)
 
     @classmethod
     def register(cls, elem_id: int) -> callable:
+        """
+        Registers a class as a decoder for a specific element ID.
+
+        This method is intended to be used as a decorator to register a class
+        that can decode messages of a specific type identified by `elem_id`.
+
+        Args:
+            elem_id (int): The element ID to register the class for.
+
+        Example:
+            @ElementRegistry.register(elem_id=10)
+            class SomeElement(Element):
+                @classmethod
+                def decode(cls, data):
+                    return SomeElement()
+        """
+
         def decorator(element_class: Type[E]) -> Type[E]:
             cls._decoders[elem_id] = element_class
             return element_class
@@ -23,6 +54,16 @@ class ElementRegistry:
 
     @classmethod
     def decode(cls, data) -> E:
+        """
+        Decodes the given data using the appropriate decoder.
+
+        Args:
+            data (dict): The data to decode.
+
+        Returns:
+            E: The decoded element if successful.
+            UnsupportedElement: If decoding fails due to a ValueError.
+        """
         try:
             return cls._decoders[data.get("45002")].decode(data)
         except ValueError:
@@ -30,20 +71,58 @@ class ElementRegistry:
 
 
 class Element(ABC, BaseModel):
+    """
+    Abstract base class for elements, inheriting from ABC and BaseModel.
+
+    Methods:
+        decode(cls, data) -> E:
+            Decodes the given data into an instance of the element.
+            Must be implemented by subclasses.
+
+        __str__(self):
+            Returns a string representation of the element.
+            Must be implemented by subclasses.
+    """
     ...
 
     @classmethod
     @abstractmethod
     def decode(cls, data) -> E:
+        """
+        Abstract method to decode the given data into an instance of the element.
+
+        Args:
+            data: The data to be decoded.
+
+        Returns:
+            An instance of type E.
+
+        Raises:
+            NotImplementedError: This method is not yet implemented.
+        """
         raise NotImplementedError
 
     @abstractmethod
     def __str__(self):
+        """
+        Return a string representation of the object.
+        This method should be overridden by subclasses to provide a meaningful
+        string representation of the object. If not implemented, it raises a
+        NotImplementedError.
+
+        Returns:
+            str: A string representation of the object.
+        
+        Raises:
+            NotImplementedError: If the method is not overridden by a subclass.
+        """
+
         raise NotImplementedError
 
 
 class UnsupportedElement(Element):
-    """ data is None when error raised in parsing, is dict when no parse function found """
+    """data is None when error raised in parsing, is dict when no parse function found"""
+
     data: dict | None
 
     @classmethod
@@ -51,7 +130,7 @@ class UnsupportedElement(Element):
         return UnsupportedElement(data=data)
 
     def __str__(self):
-        return "不支持的消息"
+        return "[不支持的消息]"
 
 
 @ElementRegistry.register(elem_id=1)
@@ -104,31 +183,30 @@ class FileElement(Element):
     hash: str | None
     path: str | None
 
-
     @classmethod
     def decode(cls, data):
         return FileElement(
-            hash=hash.hex() if isinstance(hash:=data.get("45406"), bytes) else None,
-            path=path.decode() if isinstance(path:=data.get("45954"), bytes) else None,
+            hash=hash.hex() if isinstance(hash := data.get("45406"), bytes) else None,
+            path=(
+                path.decode() if isinstance(path := data.get("45954"), bytes) else None
+            ),
         )
 
     def __str__(self):
         return "[文件]"
-    
+
 
 @ElementRegistry.register(elem_id=4)
 class AudioElement(Element):
     filename: str
     hash: str | None
 
-
     @classmethod
     def decode(cls, data):
         return AudioElement(
             filename=data.get("45402"),
-            hash=hash.hex() if isinstance(hash:=data.get("45406"), bytes) else None,
+            hash=hash.hex() if isinstance(hash := data.get("45406"), bytes) else None,
         )
-    
 
     def __str__(self):
         return "[语音消息]"
@@ -139,14 +217,12 @@ class VideoElement(Element):
     filename: str | None
     hash: str | None
 
-
     @classmethod
     def decode(cls, data):
         return VideoElement(
             filename=data.get("40402"),
-            hash=hash.hex() if isinstance(hash:=data.get("45406"), bytes) else None
+            hash=hash.hex() if isinstance(hash := data.get("45406"), bytes) else None,
         )
-    
 
     def __str__(self):
         return "[视频消息]"
@@ -172,16 +248,18 @@ class Reply(Element):
     source_sender_uin: str | None
     source_sender_qq: int | None
     source_time: int | None
-    source_content: 'Message'
+    source_content: "Message"
 
     @classmethod
     def decode(cls, data):
         return Reply(
             source_seq=data.get("47402"),
-            source_sender_uin=sender_uin if isinstance(sender_uin:=data.get("40020"), str) else None,
+            source_sender_uin=(
+                sender_uin if isinstance(sender_uin := data.get("40020"), str) else None
+            ),
             source_sender_qq=data.get("47403"),
             source_time=data.get("47404"),
-            source_content=Message.from_reply(data.get("47423"))
+            source_content=Message.from_reply(data.get("47423")),
         )
 
     def __str__(self):
@@ -214,21 +292,22 @@ class WithdrawNotifyElement(SystemNotificationElement):
     @classmethod
     def system_decode(cls, data):
         return WithdrawNotifyElement(
-            sender=sender if isinstance(sender:=data.get("47705"), str) else None,
-            withdrawer=withdrawer if isinstance(withdrawer:=data.get("47716"), str) else None,
-            suffix=suffix if (suffix:=data.get("47713")) else None,
+            sender=sender if isinstance(sender := data.get("47705"), str) else None,
+            withdrawer=(
+                withdrawer if isinstance(withdrawer := data.get("47716"), str) else None
+            ),
+            suffix=suffix if (suffix := data.get("47713")) else None,
         )
 
     def __str__(self):
         return "撤回了一条消息"
-    
+
 
 @ElementRegistry.register(elem_id=9)
 class RedPackElement(Element):
     greet: str
     alt: str
     skin_type: str | None
-
 
     @classmethod
     def decode(cls, data):
@@ -241,9 +320,13 @@ class RedPackElement(Element):
         return RedPackElement(
             greet=desc.get("48443"),
             alt=desc.get("48448"),
-            skin_type=skin_type if isinstance(skin_type:=data.get("48421").get("5"), str) else None,
+            skin_type=(
+                skin_type
+                if isinstance(skin_type := data.get("48421").get("5"), str)
+                else None
+            ),
         )
-    
+
     def __str__(self):
         return self.alt
 
@@ -254,9 +337,7 @@ class AppElement(Element):
 
     @classmethod
     def decode(cls, data):
-        return AppElement(
-            data=data.get("47901").decode()
-        )
+        return AppElement(data=data.get("47901").decode())
 
     def __str__(self):
         return "[应用消息]"
@@ -323,13 +404,12 @@ class BotCardMobileElement(Element):
 
     def __str__(self):
         return "[Bot卡片]"
-    
+
 
 @ElementRegistry.register(elem_id=21)
 class CallNotifyElement(Element):
     alt_1: str
     alt_2: str
-
 
     @classmethod
     def decode(cls, data):
@@ -337,7 +417,6 @@ class CallNotifyElement(Element):
             alt_1=data.get("48153"),
             alt_2=data.get("48157"),
         )
-    
 
     def __str__(self):
         return self.alt_1
@@ -346,10 +425,10 @@ class CallNotifyElement(Element):
 class Message(BaseModel):
     ID: int | None
     seq: int | None
-    elements: List['Element']
+    elements: List["Element"]
 
     @classmethod
-    def from_db(cls, dbo: GroupMessage) -> 'Message':
+    def from_db(cls, dbo: GroupMessage) -> "Message":
         if dbo.message_body is None:
             elements = []
         else:
@@ -366,7 +445,7 @@ class Message(BaseModel):
         )
 
     @classmethod
-    def from_reply(cls, embed) -> 'Message':
+    def from_reply(cls, embed) -> "Message":
         if embed is None:
             embed = []
         if isinstance(embed, dict):
