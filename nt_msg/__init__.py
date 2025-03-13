@@ -2,11 +2,8 @@ from abc import ABC, abstractmethod
 import blackboxprotobuf
 from pydantic import BaseModel
 from typing import List, Type, TypeVar
-import lxml.etree
-from io import BytesIO
 
 from collections import defaultdict
-from pprint import pprint
 
 from db import GroupMessage
 
