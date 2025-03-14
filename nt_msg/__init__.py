@@ -83,6 +83,7 @@ class Element(ABC, BaseModel):
             Returns a string representation of the element.
             Must be implemented by subclasses.
     """
+
     ...
 
     @classmethod
@@ -112,7 +113,7 @@ class Element(ABC, BaseModel):
 
         Returns:
             str: A string representation of the object.
-        
+
         Raises:
             NotImplementedError: If the method is not overridden by a subclass.
         """
@@ -121,7 +122,19 @@ class Element(ABC, BaseModel):
 
 
 class UnsupportedElement(Element):
-    """data is None when error raised in parsing, is dict when no parse function found"""
+    """
+    UnsupportedElement is a class that represents an element which is not supported.
+
+    Attributes:
+        data (dict | None): Contains the data unsupported to parse, None if fails to parse.
+
+    Methods:
+        decode(cls, data):
+            Class method that decodes the given data into an UnsupportedElement instance.
+
+        __str__():
+            Returns a string representation indicating that the message is not supported.
+    """
 
     data: dict | None
 
@@ -135,6 +148,13 @@ class UnsupportedElement(Element):
 
 @ElementRegistry.register(elem_id=1)
 class Text(Element):
+    """
+    Basic text element class.
+
+    Attributes:
+        content (str | None): The content of the text element.
+    """
+
     content: str | None
 
     @classmethod
@@ -149,6 +169,17 @@ class Text(Element):
 
 @ElementRegistry.register(elem_id=2)
 class Image(Element):
+    """
+    Image element class.
+
+    Attributes:
+        filename (str | None): The filename of the image.
+        width (int): The width of the image.
+        height (int): The height of the image.
+        path (str | None): The path of the image.
+        alt (str | None): The alt text of the image.
+    """
+
     filename: str | None
     width: int
     height: int
@@ -180,6 +211,14 @@ class Image(Element):
 
 @ElementRegistry.register(elem_id=3)
 class FileElement(Element):
+    """
+    File element class.
+
+    Attributes:
+        hash (str | None): The hash of the file.
+        path (str | None): The path of the file.
+    """
+
     hash: str | None
     path: str | None
 
@@ -198,6 +237,14 @@ class FileElement(Element):
 
 @ElementRegistry.register(elem_id=4)
 class AudioElement(Element):
+    """
+    Audio element class.
+
+    Attributes:
+        filename (str | None): The filename of the audio.
+        hash (str | None): The hash of the audio.
+    """
+
     filename: str
     hash: str | None
 
@@ -214,6 +261,14 @@ class AudioElement(Element):
 
 @ElementRegistry.register(elem_id=5)
 class VideoElement(Element):
+    """
+    Video element class.
+
+    Attributes:
+        filename (str | None): The filename of the video.
+        hash (str | None): The hash of the video.
+    """
+
     filename: str | None
     hash: str | None
 
@@ -230,6 +285,13 @@ class VideoElement(Element):
 
 @ElementRegistry.register(elem_id=6)
 class EmojiElement(Element):
+    """
+    System Emoji element class.
+
+    Attributes:
+        ID (int): The ID of the emoji.
+    """
+
     ID: int
 
     @classmethod
@@ -244,6 +306,17 @@ class EmojiElement(Element):
 
 @ElementRegistry.register(elem_id=7)
 class Reply(Element):
+    """
+    Reply to a message.
+
+    Attributes:
+        source_seq (int | None): The sequence number of the source message.
+        source_sender_uin (str | None): The sender UIN of the source message.
+        source_sender_qq (int | None): The sender QQ of the source message.
+        source_time (int | None): The time of the source message.
+        source_content (Message): The source message parsed using from_reply.
+    """
+
     source_seq: int | None
     source_sender_uin: str | None
     source_sender_qq: int | None
@@ -268,6 +341,15 @@ class Reply(Element):
 
 @ElementRegistry.register(elem_id=8)
 class SystemNotificationElement(Element):
+    """
+    System notification abstract element.
+
+    Methods:
+        system_decode(cls, data) -> E:
+            Decodes the given data into an instance of a SystemNotificationElement.
+            Must be implemented by subclasses
+    """
+
     @classmethod
     def decode(cls, data):
         # 47705 -> sender
@@ -285,6 +367,15 @@ class SystemNotificationElement(Element):
 
 
 class WithdrawNotifyElement(SystemNotificationElement):
+    """
+    Withdraw notification SystemNotificationElement class.
+
+    Attributes:
+        sender (str | None): The sender of the message.
+        withdrawer (str | None): The withdrawer of the message.
+        suffix (str | None): The suffix of the withdraw notification.
+    """
+
     sender: str | None
     withdrawer: str | None
     suffix: str | None
@@ -305,6 +396,15 @@ class WithdrawNotifyElement(SystemNotificationElement):
 
 @ElementRegistry.register(elem_id=9)
 class RedPackElement(Element):
+    """
+    Red packet element.
+
+    Attributes:
+        greet (str): The greeting message for the red packet.
+        alt (str): The alt text for the red packet.
+        skin_type (str | None): The skin type of the red packet.
+    """
+
     greet: str
     alt: str
     skin_type: str | None
@@ -333,6 +433,13 @@ class RedPackElement(Element):
 
 @ElementRegistry.register(elem_id=10)
 class AppElement(Element):
+    """
+    App message element.
+
+    Attributes:
+        data (str): The json data of the app message.
+    """
+
     data: str
 
     @classmethod
@@ -345,6 +452,14 @@ class AppElement(Element):
 
 @ElementRegistry.register(elem_id=11)
 class StickerElement(Element):
+    """
+    Sticker element.
+
+    Attributes:
+        alt (str | None): The alt text for the sticker.
+        ID (str | None): The ID of the sticker.
+    """
+
     alt: str | None
     ID: str | None
 
@@ -372,6 +487,9 @@ class BotCardElement(Element):
 
 @ElementRegistry.register(elem_id=16)
 class XMLElement(Element):
+    """
+    XML message element.
+    """
     @classmethod
     def decode(cls, data):
         # TODO: Example Missing
@@ -386,6 +504,9 @@ class XMLElement(Element):
 
 
 class ForwardedMessagesXMLElement(XMLElement):
+    """
+    Multiple forwarded messages XML element.
+    """
     @classmethod
     def xml_decode(cls, data):
         # TODO
@@ -408,6 +529,13 @@ class BotCardMobileElement(Element):
 
 @ElementRegistry.register(elem_id=21)
 class CallNotifyElement(Element):
+    """
+    Call notification element.
+
+    Attributes:
+        alt_1 (str): The first alt text.
+        alt_2 (str): The second alt text
+    """
     alt_1: str
     alt_2: str
 
@@ -423,12 +551,49 @@ class CallNotifyElement(Element):
 
 
 class Message(BaseModel):
+    """
+    Message class represents a message with an ID, sequence number, and a list of elements.
+
+    Attributes:
+        ID (int | None): The unique identifier of the message.
+        seq (int | None): The sequence number of the message.
+        elements (List[Element]): A list of elements contained in the message.
+
+    Methods:
+        from_db(cls, dbo: GroupMessage) -> "Message":
+            Creates a Message instance from a database object.
+            
+            Args:
+                dbo (GroupMessage): The database object containing message data.
+            
+            Returns:
+                Message: A new instance of the Message class.
+        
+        from_reply(cls, embed) -> "Message":
+            Creates a Message instance from a reply embed.
+            
+            Args:
+                embed (dict or list): The embed data from a reply.
+            
+            Returns:
+                Message: A new instance of the Message class.
+    """
     ID: int | None
     seq: int | None
     elements: List["Element"]
 
     @classmethod
     def from_db(cls, dbo: GroupMessage) -> "Message":
+        """
+        Create a Message instance from a GroupMessage database object.
+
+        Args:
+            cls: The class that this method is called on.
+            dbo (GroupMessage): The database object containing the message data.
+
+        Returns:
+            Message: An instance of the Message class populated with data from the database object.
+        """
         if dbo.message_body is None:
             elements = []
         else:
