@@ -6,6 +6,7 @@ A python repo to parse nt_msg.db
 
 - db -> orm to manage SQLite files from NTQQ
 - nt_msg -> module to parse message body from nt_msg.decrypt.db
+- examples -> examples
 
 ## Development
 
