@@ -1,12 +1,23 @@
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy import String, LargeBinary, Text
 
+from .man import DatabaseManager
 
-class Base(DeclarativeBase):
+
+__all__ = [
+    "PrivateMessage",
+    "GroupMessage",
+    "NTUIDMapping",
+    "StickerMapping",
+]
+
+
+class Model(DeclarativeBase):
     ...
 
 
-class PrivateMessage(Base):
+@DatabaseManager.register_model("nt_msg")
+class PrivateMessage(Model):
     """
     Private Message Table
     nt_msg.db -> c2c_msg_table
@@ -54,56 +65,58 @@ class PrivateMessage(Base):
     UNK_35: Mapped[int] = mapped_column("40084")
 
 
-class GroupMessage(Base):
+@DatabaseManager.register_model("nt_msg")
+class GroupMessage(Model):
     """
     Group Message Table
     nt_msg.db -> group_msg_table
     """
     __tablename__ = "group_msg_table"
-    ID: Mapped[int] = mapped_column("40001", primary_key=True)
-    UNK_01: Mapped[int] = mapped_column("40002")
-    seq: Mapped[int] = mapped_column("40003")
-    UNK_03: Mapped[int] = mapped_column("40010")
-    UNK_04: Mapped[int] = mapped_column("40011")
-    UNK_05: Mapped[int] = mapped_column("40012")
-    UNK_06: Mapped[int] = mapped_column("40013")
-    group_id: Mapped[str] = mapped_column("40020", String(24))  # Tencent internal UID
+    msgId: Mapped[int] = mapped_column("40001", primary_key=True)
+    msgRandom: Mapped[int] = mapped_column("40002")
+    msgSeq: Mapped[int] = mapped_column("40003")
+    chatType: Mapped[int] = mapped_column("40010")  # TODO: Enum
+    msgType: Mapped[int] = mapped_column("40011")
+    subMsgType: Mapped[int] = mapped_column("40012")
+    sendType: Mapped[int] = mapped_column("40013")
+    senderUid: Mapped[str] = mapped_column("40020", String(24))
     UNK_08: Mapped[int] = mapped_column("40026")
-    group_qq: Mapped[str] = mapped_column("40021", String())  # Group qq
-    group_qq_2: Mapped[int] = mapped_column("40027")  # group qq agn for no reason
+    peerUid: Mapped[str] = mapped_column("40021", String(24))
+    peerUin: Mapped[int] = mapped_column("40027")
     UNK_11: Mapped[int] = mapped_column("40040")
-    UNK_12: Mapped[int] = mapped_column("40041")
-    timestamp: Mapped[int] = mapped_column("40050")  # time message sent
+    sendStatus: Mapped[int] = mapped_column("40041")
+    msgTime: Mapped[int] = mapped_column("40050")  # UTC+8
     UNK_14: Mapped[int] = mapped_column("40052")
-    UNK_15: Mapped[str] = mapped_column("40090", Text)  # empty
-    # sender's nickname, not guaranteed (maybe empty)
-    nick_name: Mapped[str] = mapped_column("40093", Text)
-    message_body: Mapped[bytes] = mapped_column("40800", LargeBinary)  # protobuf
-    # protobuf, the message replied to
-    reply_body: Mapped[bytes] = mapped_column("40900", LargeBinary)
+    sendMemberName: Mapped[str] = mapped_column("40090", Text)
+    sendNickName: Mapped[str] = mapped_column("40093", Text)
+    msgBody: Mapped[bytes] = mapped_column("40800", LargeBinary)  # protobuf
+    refBody: Mapped[bytes] = mapped_column("40900", LargeBinary)
     UNK_19: Mapped[int] = mapped_column("40105")
     UNK_20: Mapped[int] = mapped_column("40005")
-    # time of the day the message was sent, in sec
-    timestamp_day: Mapped[int] = mapped_column("40058")
-    UNK_22: Mapped[int] = mapped_column("40006")
-    UNK_23: Mapped[int] = mapped_column("40100")
-    # protobuf, withdraw status
-    withdraw_status: Mapped[bytes] = mapped_column("40600", LargeBinary)
-    UNK_25: Mapped[int] = mapped_column("40060")
-    reply_to_seq: Mapped[int] = mapped_column("40850")  # seq of the message replying to
+    msgTimeDay: Mapped[int] = mapped_column("40058")  # UTC+8
+    elemId: Mapped[int] = mapped_column("40006")
+    atFlag: Mapped[int] = mapped_column("40100")
+    msgStatus: Mapped[bytes] = mapped_column("40600", LargeBinary)
+    groupState: Mapped[int] = mapped_column("40060")
+    refSeq: Mapped[int] = mapped_column("40850")
     UNK_27: Mapped[int] = mapped_column("40851")
     UNK_28: Mapped[bytes] = mapped_column("40601", LargeBinary)  # always null
     UNK_29: Mapped[bytes] = mapped_column("40801", LargeBinary)  # protobuf
-    # protobuf, insufficient resource, related with file? always eae91300
+    # protobuf, insufficient resource, related with file?
     UNK_30: Mapped[bytes] = mapped_column("40605", LargeBinary)
-    group_qq_3: Mapped[int] = mapped_column("40030")  # qq num
-    sender_qq: Mapped[int] = mapped_column("40033")  # qq num
+    groupUin: Mapped[int] = mapped_column("40030")  # qq num
+    senderUin: Mapped[int] = mapped_column("40033")  # qq num
     UNK_33: Mapped[int] = mapped_column("40062")
     UNK_34: Mapped[int] = mapped_column("40083")
     UNK_35: Mapped[int] = mapped_column("40084")
 
 
-class NTUIDMapping(Base):
+@DatabaseManager.register_model("nt_msg")
+class NTUIDMapping(Model):
+    """
+    qqnt uid mapping table
+    nt_msg.db -> nt_uid_mapping_table
+    """
     __tablename__ = "nt_uid_mapping_table"
     ID: Mapped[int] = mapped_column("48901", primary_key=True)
     uid: Mapped[str] = mapped_column("48902", String(24))
@@ -111,7 +124,12 @@ class NTUIDMapping(Base):
     qq: Mapped[int] = mapped_column("1002")
 
 
-class StickerMapping(Base):
+@DatabaseManager.register_model("emoji")
+class StickerMapping(Model):
+    """
+    market sticker table
+    emoji.db -> market_emoticon_table
+    """
     __tablename__ = "market_emoticon_table"
     ID: Mapped[str] = mapped_column("80920", primary_key=True)
     pack_id: Mapped[str] = mapped_column("80943", primary_key=True)
