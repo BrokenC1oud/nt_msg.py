@@ -125,6 +125,106 @@ class NTUIDMapping(Model):
 
 
 @DatabaseManager.register_model("emoji")
+class SystemEmoji(Model):
+    """
+    QQ 默认表情数据
+    emoji.db -> base_sys_emoji_table
+    """
+    __tablename__ = "base_sys_emoji_table"
+    ID: Mapped[str] = mapped_column("81211", primary_key=True)
+    desc: Mapped[str] = mapped_column("81212")
+    UNK_01: Mapped[str] = mapped_column("81213")
+    UNK_02: Mapped[int] = mapped_column("81214")
+    UNK_03: Mapped[int] = mapped_column("81215")
+    UNK_04: Mapped[int] = mapped_column("81216")
+    UNK_05: Mapped[int] = mapped_column("81217")
+    download_link: Mapped[bytes] = mapped_column("81218")
+    UNK_06: Mapped[str] = mapped_column("81219")
+    UNK_07: Mapped[bytes] = mapped_column("81220")
+    special: Mapped[int] = mapped_column("81221")
+    UNK_08: Mapped[int] = mapped_column("81222")
+    UNK_09: Mapped[int] = mapped_column("81223")
+    UNK_10: Mapped[int] = mapped_column("81224")
+    UNK_11: Mapped[int] = mapped_column("81225")
+    emoji_type: Mapped[int] = mapped_column("81226")
+    type_desc: Mapped[str] = mapped_column("81266")
+    static_download_link: Mapped[str] = mapped_column("81229")
+    apng_link: Mapped[str] = mapped_column("81230")
+
+
+@DatabaseManager.register_model("emoji")
+class BottomeEmoji(Model):
+    """
+    收藏的原创表情
+    emoji.db -> bottom_emoji_table
+    """
+    __tablename__ = "bottom_emoji_table"
+    ID: Mapped[int] = mapped_column("80830", primary_key=True)
+    data: Mapped[bytes] = mapped_column("81322")
+
+
+@DatabaseManager.register_model("emoji")
+class EmojiConfig(Model):
+    """
+    QQ 表情配置
+    emoji.db -> emoji_config_storage_table
+    """
+    __tablename__ = "emoji_config_storage_table"
+    ID: Mapped[int] = mapped_column("80401", primary_key=True)
+    UNK: Mapped[int] = mapped_column("80402")
+    data: Mapped[str] = mapped_column("80403")
+
+
+@DatabaseManager.register_model("emoji")
+class EmojiGroup(Model):
+    """
+    QQ 表情分组
+    emoji.db -> emoji_group_table
+    """
+    __tablename__ = "emoji_group_table"
+    data: Mapped[bytes] = mapped_column("81387", primary_key=True)
+
+
+@DatabaseManager.register_model("emoji")
+class EmojiMiscData(Model):
+    """
+    QQ 表情杂项数据
+    emoji.db -> emoji_misc_data_table
+    """
+    __tablename__ = "emoji_misc_data_table"
+    ID: Mapped[str] = mapped_column("81388", primary_key=True)
+    data: Mapped[bytes] = mapped_column("81398")
+
+
+@DatabaseManager.register_model("emoji")
+class FavEmojiInfo(Model):
+    """
+    QQ 收藏表情信息
+    emoji.db -> fav_emoji_info_storage_table
+    """
+    __tablename__ = "fav_emoji_info_storage_table"
+    filename: Mapped[str] = mapped_column("80002", primary_key=True)
+    order: Mapped[int] = mapped_column("80001")
+    uin: Mapped[str] = mapped_column("1002")
+    local_path: Mapped[str] = mapped_column("80012")
+    download_url: Mapped[str] = mapped_column("80010")
+    md5: Mapped[str] = mapped_column("80011")
+    UNK_01: Mapped[str] = mapped_column("80013")
+    UNK_02: Mapped[str] = mapped_column("80014")
+    UNK_03: Mapped[str] = mapped_column("80211")
+    UNK_04: Mapped[int] = mapped_column("80212")
+    original: Mapped[int] = mapped_column("80213")
+    original_id_1: Mapped[str] = mapped_column("80201")
+    original_id_2: Mapped[str] = mapped_column("80202")
+    UNK_05: Mapped[str] = mapped_column("80221")
+    UNK_06: Mapped[str] = mapped_column("80222")
+    UNK_07: Mapped[int] = mapped_column("80021")
+    UNK_08: Mapped[int] = mapped_column("80022")
+    desc_1: Mapped[str] = mapped_column("80223")
+    desc_2: Mapped[str] = mapped_column("80225")
+
+
+@DatabaseManager.register_model("emoji")
 class StickerMapping(Model):
     """
     market sticker table

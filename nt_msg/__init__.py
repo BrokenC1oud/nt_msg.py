@@ -593,18 +593,18 @@ class Message(BaseModel):
         Returns:
             Message: An instance of the Message class populated with data from the database object.
         """
-        if dbo.message_body is None:
+        if dbo.msgBody is None:
             elements = []
         else:
-            raw_elements, _ = blackboxprotobuf.decode_message(dbo.message_body)
+            raw_elements, _ = blackboxprotobuf.decode_message(dbo.msgBody)
             raw_elements = raw_elements["40800"]
             if isinstance(raw_elements, dict):
                 raw_elements = [raw_elements]
             elements = [ElementRegistry.decode(_) for _ in raw_elements]
 
         return Message(
-            ID=dbo.ID,
-            seq=dbo.seq,
+            ID=dbo.msgId,
+            seq=dbo.msgSeq,
             elements=elements,
         )
 

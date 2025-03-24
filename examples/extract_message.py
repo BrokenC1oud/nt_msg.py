@@ -5,9 +5,9 @@ import db
 
 
 def main():
-    gm_db = db.session.query(db.models.GroupMessage).first()
-    message = nt_msg.Message.from_db(gm_db)
-    pprint(messages)
+    dbman = db.DatabaseManager()
+    gms = dbman.group_messages().first()
+    pprint(nt_msg.extract_message(gms.message))
 
 
 if __name__ == "__main__":
