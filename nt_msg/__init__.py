@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
-import blackboxprotobuf
-from pydantic import BaseModel
+from collections import defaultdict
 from typing import List, Type, TypeVar
 
-from collections import defaultdict
+import blackboxprotobuf
+from pydantic import BaseModel
 
-from db import GroupMessage
 
 E = TypeVar("E", bound="Element")
 
@@ -225,7 +224,7 @@ class FileElement(Element):
     @classmethod
     def decode(cls, data):
         return FileElement(
-            hash=hash.hex() if isinstance(hash := data.get("45406"), bytes) else None,
+            hash=hash_digest.hex() if isinstance(hash_digest := data.get("45406"), bytes) else None,
             path=(
                 path.decode() if isinstance(path := data.get("45954"), bytes) else None
             ),
@@ -583,7 +582,7 @@ class Message(BaseModel):
     elements: List["Element"]
 
     @classmethod
-    def from_db(cls, dbo: GroupMessage) -> "Message":
+    def from_db(cls, dbo) -> "Message":
         """
         Create a Message instance from a GroupMessage database object.
 
