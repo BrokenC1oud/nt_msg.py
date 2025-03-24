@@ -1,3 +1,7 @@
+"""
+Relating everything takes time......
+"""
+
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy import String, LargeBinary, Text
 
@@ -262,14 +266,14 @@ class StickerPackage(Model):
     UNK_19: Mapped[int] = mapped_column("80964")
     UNK_20: Mapped[int] = mapped_column("80965")
     UNK_21: Mapped[int] = mapped_column("80966")
-    UNK_21: Mapped[str] = mapped_column("80967")
-    UNK_22: Mapped[int] = mapped_column("80968")
-    UNK_23: Mapped[int] = mapped_column("80969")
-    UNK_24: Mapped[str] = mapped_column("80970")
-    UNK_25: Mapped[int] = mapped_column("80971")
-    UNK_26: Mapped[str] = mapped_column("80972")
-    UNK_27: Mapped[int] = mapped_column("80973")
-    UNK_28: Mapped[int] = mapped_column("80974")
+    UNK_22: Mapped[str] = mapped_column("80967")
+    UNK_23: Mapped[int] = mapped_column("80968")
+    UNK_24: Mapped[int] = mapped_column("80969")
+    UNK_25: Mapped[str] = mapped_column("80970")
+    UNK_26: Mapped[int] = mapped_column("80971")
+    UNK_27: Mapped[str] = mapped_column("80972")
+    UNK_28: Mapped[int] = mapped_column("80973")
+    UNK_29: Mapped[int] = mapped_column("80974")
 
 
 @DatabaseManager.register_model("emoji")
@@ -620,3 +624,191 @@ class GroupNotify(Model):
     UNK_09: Mapped[bytes] = mapped_column("61009")
     req_info: Mapped[str] = mapped_column("61010")
     additional: Mapped[str] = mapped_column("61011")
+
+
+@DatabaseManager.register_model("profile_info")
+class Buddy(Model):
+    """
+    好友信息
+    profile_info.db -> buddy_list
+    """
+    __tablename__ = "buddy_list"
+    uid: Mapped[str] = mapped_column("1000", primary_key=True)
+    qid: Mapped[str] = mapped_column("1001")
+    uin: Mapped[int] = mapped_column("1002")
+    category: Mapped[int] = mapped_column("25007")
+
+
+@DatabaseManager.register_model("profile_info")
+class BuddyRequest(Model):
+    """
+    好友通知
+    profile_info.db -> buddy_req_list_5
+    """
+    __tablename__ = "buddy_req_list_5"
+    timestamp: Mapped[int] = mapped_column("21204", primary_key=True)
+    uid: Mapped[str] = mapped_column("21001", primary_key=True)
+    nickname: Mapped[str] = mapped_column("20002")
+    UNK_04: Mapped[str] = mapped_column("20004")
+    UNK_05: Mapped[int] = mapped_column("21512")
+    approved: Mapped[int] = mapped_column("21502")
+    message: Mapped[str] = mapped_column("21508")
+    source: Mapped[str] = mapped_column("21509")
+    status: Mapped[int] = mapped_column("21505")
+    group_uin: Mapped[int] = mapped_column("60001")
+    UNK_11: Mapped[str] = mapped_column("60007")
+    UNK_12: Mapped[int] = mapped_column("21515")
+    source_flag: Mapped[int] = mapped_column("21501")
+    UNK_14: Mapped[int] = mapped_column("21516")
+    UNK_15: Mapped[int] = mapped_column("21523")
+    UNK_16: Mapped[int] = mapped_column("21513")
+    UNK_17: Mapped[int] = mapped_column("21506")
+    UNK_18: Mapped[int] = mapped_column("21517")
+    UNK_19: Mapped[int] = mapped_column("21519")
+    UNK_20: Mapped[str] = mapped_column("21522")
+    UNK_21: Mapped[str] = mapped_column("21525")
+    UNK_22: Mapped[int] = mapped_column("21524")
+    UNK_23: Mapped[int] = mapped_column("21526")
+    UNK_24: Mapped[int] = mapped_column("21510")
+    UNK_25: Mapped[int] = mapped_column("21511")
+
+
+@DatabaseManager.register_model("profile_info")
+class BuddyCategory(Model):
+    """
+    好友分组
+    profile_info.db -> category_list_v2
+    """
+    __tablename__ = "category_list_v2"
+    UNK_1: Mapped[str] = mapped_column("1000", primary_key=True)
+    UNK_2: Mapped[int] = mapped_column("25006")
+    UNK_3: Mapped[int] = mapped_column("25013")
+    UNK_4: Mapped[int] = mapped_column("25012")
+    UNK_5: Mapped[int] = mapped_column("20075")
+    UNK_6: Mapped[bytes] = mapped_column("25001")
+    data: Mapped[bytes] = mapped_column("25011")
+    UNK_8: Mapped[int] = mapped_column("25015")
+
+
+@DatabaseManager.register_model("profile_info")
+class BotProfile(Model):
+    """
+    机器人信息
+    profile_info.db -> profile_info_adelie
+    """
+    __tablename__ = "profile_info_adelie"
+    qid: Mapped[str] = mapped_column("1000", primary_key=True)
+    uin: Mapped[int] = mapped_column("1002")
+    nickname: Mapped[str] = mapped_column("320001")
+    avatar_url: Mapped[str] = mapped_column("320002")
+    desc: Mapped[str] = mapped_column("320003")
+    settings: Mapped[str] = mapped_column("320004")
+    UNK_07: Mapped[int] = mapped_column("320005")
+    UNK_08: Mapped[str] = mapped_column("320006")
+    UNK_09: Mapped[str] = mapped_column("320007")
+    background_light: Mapped[str] = mapped_column("320008")
+    background_dark: Mapped[str] = mapped_column("320009")
+    UNK_12: Mapped[bytes] = mapped_column("320010")
+    UNK_13: Mapped[bytes] = mapped_column("320011")
+    UNK_14: Mapped[int] = mapped_column("320012")
+    UNK_15: Mapped[int] = mapped_column("320013")
+    UNK_16: Mapped[bytes] = mapped_column("320014")
+    UNK_17: Mapped[int] = mapped_column("320015")
+    UNK_18: Mapped[int] = mapped_column("320016")
+    UNK_19: Mapped[int] = mapped_column("320017")
+    UNK_20: Mapped[int] = mapped_column("320060")
+    UNK_21: Mapped[bytes] = mapped_column("320018")
+    UNK_22: Mapped[int] = mapped_column("320019")
+    UNK_23: Mapped[int] = mapped_column("320020")
+    UNK_24: Mapped[int] = mapped_column("32002")
+    UNK_25: Mapped[int] = mapped_column("320021")
+    UNK_26: Mapped[bytes] = mapped_column("320022")
+    UNK_27: Mapped[bytes] = mapped_column("320023")
+    UNK_28: Mapped[bytes] = mapped_column("320025")
+    UNK_29: Mapped[int] = mapped_column("320026")
+    UNK_30: Mapped[str] = mapped_column("320027")
+    UNK_31: Mapped[int] = mapped_column("320028")
+    UNK_32: Mapped[str] = mapped_column("320029")
+    UNK_33: Mapped[str] = mapped_column("320030")
+    UNK_34: Mapped[int] = mapped_column("320031")
+    UNK_35: Mapped[int] = mapped_column("320032")
+    UNK_36: Mapped[str] = mapped_column("320033")
+    UNK_37: Mapped[int] = mapped_column("320034")
+    body: Mapped[str] = mapped_column("320035")
+    UNK_39: Mapped[str] = mapped_column("320036")
+    UNK_40: Mapped[int] = mapped_column("320037")
+    UNK_41: Mapped[int] = mapped_column("320038")
+    UNK_42: Mapped[int] = mapped_column("320039")
+    UNK_43: Mapped[int] = mapped_column("320040")
+    UNK_44: Mapped[int] = mapped_column("320041")
+    UNK_45: Mapped[int] = mapped_column("320042")
+    UNK_46: Mapped[str] = mapped_column("320043")
+    UNK_47: Mapped[str] = mapped_column("320044")
+    UNK_48: Mapped[str] = mapped_column("320045")
+    UNK_49: Mapped[int] = mapped_column("320046")
+    UNK_50: Mapped[int] = mapped_column("320047")
+    UNK_51: Mapped[str] = mapped_column("320048")
+    UNK_52: Mapped[int] = mapped_column("320051")
+    UNK_53: Mapped[int] = mapped_column("320049")
+    UNK_54: Mapped[bytes] = mapped_column("320050")
+    UNK_55: Mapped[int] = mapped_column("320059")
+    UNK_56: Mapped[int] = mapped_column("320052")
+    UNK_57: Mapped[int] = mapped_column("320054")
+    UNK_58: Mapped[int] = mapped_column("320055")
+    UNK_59: Mapped[int] = mapped_column("320056")
+    UNK_60: Mapped[int] = mapped_column("320057")
+    UNK_61: Mapped[int] = mapped_column("320058")
+    UNK_62: Mapped[bytes] = mapped_column("320062")
+    UNK_63: Mapped[int] = mapped_column("320063")
+
+
+@DatabaseManager.register_model("profile_info")
+class BuddyProfile(Model):
+    """
+    好友信息
+    profile_info.db -> profile_info_v6
+    """
+    __tablename__ = "profile_info_v6"
+    qid: Mapped[str] = mapped_column("1001")
+    uin: Mapped[int] = mapped_column("1002")
+    nickname: Mapped[str] = mapped_column("20002")
+    UNK_4: Mapped[str] = mapped_column("24106")
+    UNK_5: Mapped[str] = mapped_column("24107")
+    UNK_6: Mapped[str] = mapped_column("24108")
+    UNK_7: Mapped[str] = mapped_column("24109")
+    remark: Mapped[str] = mapped_column("20009")
+    signature: Mapped[str] = mapped_column("20011")
+    uid: Mapped[str] = mapped_column("1000", primary_key=True)
+    UNK_11: Mapped[int] = mapped_column("20001")
+    UNK_12: Mapped[int] = mapped_column("20003")
+    avatar_url: Mapped[str] = mapped_column("20004")
+    UNK_14: Mapped[int] = mapped_column("20005")
+    UNK_15: Mapped[int] = mapped_column("20006")
+    UNK_16: Mapped[int] = mapped_column("20007")
+    UNK_17: Mapped[int] = mapped_column("20008")
+    UNK_18: Mapped[int] = mapped_column("20010")
+    UNK_19: Mapped[int] = mapped_column("20012")
+    UNK_20: Mapped[int] = mapped_column("20014")
+    UNK_21: Mapped[bytes] = mapped_column("20017")
+    UNK_22: Mapped[int] = mapped_column("20016")
+    UNK_23: Mapped[int] = mapped_column("24103")
+    UNK_24: Mapped[bytes] = mapped_column("20042")
+    UNK_25: Mapped[bytes] = mapped_column("20059")
+    UNK_26: Mapped[int] = mapped_column("20060")
+    UNK_27: Mapped[int] = mapped_column("20061")
+    UNK_28: Mapped[int] = mapped_column("20043")
+    UNK_29: Mapped[int] = mapped_column("20048")
+    UNK_30: Mapped[int] = mapped_column("20037")
+    UNK_31: Mapped[int] = mapped_column("20056")
+    UNK_32: Mapped[int] = mapped_column("20067")
+    UNK_33: Mapped[bytes] = mapped_column("20057")
+    UNK_34: Mapped[int] = mapped_column("20070")
+    UNK_35: Mapped[int] = mapped_column("20071")
+    UNK_36: Mapped[bytes] = mapped_column("21000")
+    relation: Mapped[bytes] = mapped_column("20072")
+    UNK_38: Mapped[int] = mapped_column("20075")
+    UNK_39: Mapped[bytes] = mapped_column("20066")
+    UNK_40: Mapped[int] = mapped_column("24104")
+    UNK_41: Mapped[bytes] = mapped_column("24105")
+    UNK_42: Mapped[int] = mapped_column("24110")
+    UNK_43: Mapped[int] = mapped_column("24111")
