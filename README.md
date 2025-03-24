@@ -11,3 +11,23 @@ A python repo to parse nt_msg.db
 ## Development
 
 decrypt your db files following [QQDecrypt](https://qq.sbcnm.top/) and place them in root dir with name "nt_msg.decrypt.db" and so on
+
+## Progress
+
+### ORM Representation
+
+- [ ] collection.db
+- [ ] emoji.db
+- [ ] file_assistant.db
+- [ ] files_in_chat.db
+- [ ] group_info.db
+- [ ] guild_msg.db
+- [ ] misc.db
+- [ ] nt_msg.db
+- [ ] profile_info.db
+- [ ] recent_contact.db
+- [ ] rich_media.db
+- [ ] collection.db
+- [ ] collection.db
+- [ ] collection.db
+- [ ] collection.db
