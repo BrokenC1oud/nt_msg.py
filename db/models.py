@@ -8,6 +8,13 @@ __all__ = [
     "PrivateMessage",
     "GroupMessage",
     "NTUIDMapping",
+    "SystemEmoji",
+    "BottomEmoji",
+    "EmojiConfig",
+    "EmojiGroup",
+    "EmojiMiscData",
+    "FavEmojiInfo",
+    "StickerPackage",
     "StickerMapping",
 ]
 
@@ -153,7 +160,7 @@ class SystemEmoji(Model):
 
 
 @DatabaseManager.register_model("emoji")
-class BottomeEmoji(Model):
+class BottomEmoji(Model):
     """
     收藏的原创表情
     emoji.db -> bottom_emoji_table
@@ -300,3 +307,316 @@ class StickerMapping(Model):
     UNK_19: Mapped[str] = mapped_column("80942")  # always empty
     UNK_20: Mapped[str] = mapped_column("80602", nullable=True)  # always NULL
     UNK_21: Mapped[str] = mapped_column("80603", nullable=True)  # always NULL
+
+
+@DatabaseManager.register_model("group_info")
+class DoubtGroupNotifyList(Model):
+    """
+    过滤群通知
+    group_info.db -> doubt_group_notify_list
+    """
+    __tablename__ = "doubt_group_notify_list"
+    timestamp: Mapped[int] = mapped_column("61001")
+    type: Mapped[int] = mapped_column("61002")
+    status: Mapped[int] = mapped_column("61003")
+    group: Mapped[bytes] = mapped_column("61004")
+    operatee: Mapped[bytes] = mapped_column("61005")
+    operator: Mapped[bytes] = mapped_column("61006")
+    operator_info: Mapped[bytes] = mapped_column("61007")
+    operation_time: Mapped[int] = mapped_column("61008")
+    UNK_09: Mapped[bytes] = mapped_column("61009")
+    req_info: Mapped[str] = mapped_column("61010")
+    additional: Mapped[str] = mapped_column("61011")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupBulletin(Model):
+    """
+    群公告(仅最新)
+    group_info.db -> group_bulletin_table
+    """
+    __tablename__ = "group_bulletin"
+    groupUin: Mapped[int] = mapped_column("60001", primary_key=True)
+    bulletin: Mapped[bytes] = mapped_column("64205")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupDetailInfo(Model):
+    """
+    群聊更多信息
+    group_info.db -> group_detail_info_ver1
+    """
+    __tablename__ = "group_detail_info_ver1"
+    uin: Mapped[int] = mapped_column("60001", primary_key=True)
+    name: Mapped[str] = mapped_column("60007")
+    latest_bulletin: Mapped[bytes] = mapped_column("60216")
+    desc: Mapped[bytes] = mapped_column("60217")
+    remark: Mapped[str] = mapped_column("60026")
+    owner_uid: Mapped[str] = mapped_column("60002")
+    ctime: Mapped[int] = mapped_column("60004")
+    UNK_008: Mapped[int] = mapped_column("60203")
+    UNK_009: Mapped[int] = mapped_column("60204")
+    max_member: Mapped[int] = mapped_column("60005")
+    member_count: Mapped[int] = mapped_column("60006")
+    UNK_012: Mapped[int] = mapped_column("60205")
+    UNK_013: Mapped[int] = mapped_column("60206")
+    UNK_014: Mapped[int] = mapped_column("60207")
+    UNK_015: Mapped[int] = mapped_column("60210")
+    UNK_016: Mapped[int] = mapped_column("60211")
+    UNK_017: Mapped[int] = mapped_column("60212")
+    UNK_018: Mapped[int] = mapped_column("60011")
+    UNK_019: Mapped[int] = mapped_column("60214")
+    tags: Mapped[str] = mapped_column("60218")
+    UNK_021: Mapped[int] = mapped_column("60221")
+    question: Mapped[str] = mapped_column("60224")
+    UNK_023: Mapped[int] = mapped_column("60236")
+    UNK_024: Mapped[int] = mapped_column("60238")
+    UNK_025: Mapped[bytes] = mapped_column("60239")
+    legacy_desc: Mapped[bytes] = mapped_column("60240")
+    UNK_027: Mapped[bytes] = mapped_column("60241")
+    UNK_028: Mapped[bytes] = mapped_column("60242")
+    UNK_029: Mapped[int] = mapped_column("60243")
+    UNK_030: Mapped[bytes] = mapped_column("60244")
+    UNK_031: Mapped[int] = mapped_column("60027")
+    UNK_032: Mapped[int] = mapped_column("60028")
+    UNK_033: Mapped[int] = mapped_column("60255")
+    UNK_034: Mapped[int] = mapped_column("60256")
+    UNK_035: Mapped[int] = mapped_column("60258")
+    UNK_036: Mapped[bytes] = mapped_column("60261")
+    UNK_037: Mapped[str] = mapped_column("60267")
+    UNK_038: Mapped[int] = mapped_column("60274")
+    UNK_039: Mapped[int] = mapped_column("60277")
+    UNK_040: Mapped[int] = mapped_column("60279")
+    UNK_041: Mapped[int] = mapped_column("60280")
+    UNK_042: Mapped[int] = mapped_column("60281")
+    UNK_043: Mapped[int] = mapped_column("60282")
+    UNK_044: Mapped[int] = mapped_column("60283")
+    UNK_045: Mapped[int] = mapped_column("60284")
+    UNK_046: Mapped[int] = mapped_column("60285")
+    UNK_047: Mapped[int] = mapped_column("60286")
+    UNK_048: Mapped[int] = mapped_column("60287")
+    UNK_049: Mapped[int] = mapped_column("60288")
+    UNK_050: Mapped[int] = mapped_column("60291")
+    UNK_051: Mapped[int] = mapped_column("60292")
+    UNK_052: Mapped[int] = mapped_column("60294")
+    UNK_053: Mapped[int] = mapped_column("60295")
+    UNK_054: Mapped[int] = mapped_column("60296")
+    UNK_055: Mapped[int] = mapped_column("60299")
+    UNK_056: Mapped[int] = mapped_column("60300")
+    UNK_057: Mapped[int] = mapped_column("60301")
+    UNK_058: Mapped[int] = mapped_column("60219")
+    UNK_059: Mapped[int] = mapped_column("60220")
+    UNK_060: Mapped[int] = mapped_column("60222")
+    UNK_061: Mapped[int] = mapped_column("60223")
+    UNK_062: Mapped[str] = mapped_column("60225")
+    UNK_063: Mapped[int] = mapped_column("60226")
+    UNK_064: Mapped[int] = mapped_column("60227")
+    UNK_065: Mapped[int] = mapped_column("60228")
+    UNK_066: Mapped[int] = mapped_column("60229")
+    UNK_067: Mapped[int] = mapped_column("60230")
+    UNK_068: Mapped[int] = mapped_column("60231")
+    UNK_069: Mapped[str] = mapped_column("60232")
+    UNK_070: Mapped[str] = mapped_column("60233")
+    UNK_071: Mapped[int] = mapped_column("60234")
+    UNK_072: Mapped[str] = mapped_column("60235")
+    UNK_073: Mapped[int] = mapped_column("60237")
+    UNK_074: Mapped[int] = mapped_column("60247")
+    UNK_075: Mapped[int] = mapped_column("60248")
+    UNK_076: Mapped[int] = mapped_column("60249")
+    UNK_077: Mapped[int] = mapped_column("60250")
+    UNK_078: Mapped[int] = mapped_column("60251")
+    UNK_079: Mapped[int] = mapped_column("60252")
+    UNK_080: Mapped[int] = mapped_column("60253")
+    UNK_081: Mapped[int] = mapped_column("60254")
+    UNK_082: Mapped[int] = mapped_column("60259")
+    UNK_083: Mapped[int] = mapped_column("60018")
+    UNK_084: Mapped[int] = mapped_column("60262")
+    UNK_085: Mapped[int] = mapped_column("60263")
+    UNK_086: Mapped[int] = mapped_column("60264")
+    UNK_087: Mapped[int] = mapped_column("60265")
+    UNK_088: Mapped[int] = mapped_column("60266")
+    UNK_089: Mapped[int] = mapped_column("60268")
+    UNK_090: Mapped[int] = mapped_column("60269")
+    UNK_091: Mapped[int] = mapped_column("60270")
+    UNK_092: Mapped[int] = mapped_column("60271")
+    UNK_093: Mapped[int] = mapped_column("60272")
+    UNK_094: Mapped[int] = mapped_column("60275")
+    UNK_095: Mapped[int] = mapped_column("60276")
+    UNK_096: Mapped[int] = mapped_column("60278")
+    UNK_097: Mapped[int] = mapped_column("60302")
+    UNK_098: Mapped[int] = mapped_column("60304")
+    UNK_099: Mapped[int] = mapped_column("60306")
+    UNK_100: Mapped[int] = mapped_column("60308")
+    UNK_101: Mapped[bytes] = mapped_column("20017")
+    UNK_102: Mapped[int] = mapped_column("60312")
+    UNK_103: Mapped[int] = mapped_column("60313")
+    UNK_104: Mapped[int] = mapped_column("66530")
+    UNK_105: Mapped[int] = mapped_column("60298")
+    UNK_106: Mapped[str] = mapped_column("60289")
+    UNK_107: Mapped[int] = mapped_column("60307")
+    UNK_108: Mapped[bytes] = mapped_column("60305")
+    UNK_109: Mapped[bytes] = mapped_column("60257")
+    UNK_110: Mapped[bytes] = mapped_column("60303")
+    UNK_111: Mapped[int] = mapped_column("60290")
+    leave_status: Mapped[int] = mapped_column("60340")
+    UNK_113: Mapped[int] = mapped_column("60344")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupEssence(Model):
+    """
+    群精华消息
+    group_info.db -> group_essence
+    """
+    __tablename__ = "group_essence"
+    group_uin: Mapped[int] = mapped_column("60001", primary_key=True)
+    seq: Mapped[int] = mapped_column("67501", primary_key=True)
+    msg_random: Mapped[int] = mapped_column("67502", primary_key=True)
+    sender_uin: Mapped[int] = mapped_column("67503")
+    sender_nickname: Mapped[str] = mapped_column("67504")
+    status: Mapped[int] = mapped_column("67505")
+    setter_uin: Mapped[int] = mapped_column("67506")
+    setter_nickname: Mapped[str] = mapped_column("67507")
+    timestamp: Mapped[int] = mapped_column("67508")
+    UNK_10: Mapped[int] = mapped_column("67509")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupList(Model):
+    """
+    群列表
+    group_info.db -> group_list
+    """
+    __tablename__ = "group_list"
+    uin: Mapped[int] = mapped_column("60001", primary_key=True)
+    UNK_02: Mapped[int] = mapped_column("60221")
+    ctime: Mapped[int] = mapped_column("60004")
+    max_member: Mapped[int] = mapped_column("60005")
+    member_count: Mapped[int] = mapped_column("60006")
+    name: Mapped[str] = mapped_column("60007")
+    UNK_07: Mapped[int] = mapped_column("60008")
+    UNK_08: Mapped[int] = mapped_column("60009")
+    UNK_09: Mapped[int] = mapped_column("60020")
+    UNK_10: Mapped[int] = mapped_column("60011")
+    UNK_11: Mapped[int] = mapped_column("60010")
+    UNK_12: Mapped[int] = mapped_column("60017")
+    UNK_13: Mapped[int] = mapped_column("60018")
+    remark: Mapped[str] = mapped_column("60026")
+    UNK_15: Mapped[int] = mapped_column("60022")
+    UNK_16: Mapped[int] = mapped_column("60023")
+    UNK_17: Mapped[int] = mapped_column("60027")
+    UNK_18: Mapped[int] = mapped_column("60028")
+    UNK_19: Mapped[int] = mapped_column("60029")
+    UNK_20: Mapped[int] = mapped_column("60030")
+    UNK_21: Mapped[int] = mapped_column("60031")
+    UNK_22: Mapped[int] = mapped_column("60269")
+    UNK_23: Mapped[int] = mapped_column("60012")
+    UNK_24: Mapped[int] = mapped_column("60034")
+    UNK_25: Mapped[int] = mapped_column("60035")
+    UNK_26: Mapped[int] = mapped_column("60036")
+    UNK_27: Mapped[int] = mapped_column("60037")
+    UNK_28: Mapped[int] = mapped_column("60038")
+    UNK_29: Mapped[int] = mapped_column("60204")
+    UNK_30: Mapped[int] = mapped_column("60238")
+    UNK_31: Mapped[int] = mapped_column("60258")
+    UNK_32: Mapped[int] = mapped_column("60277")
+    UNK_33: Mapped[bytes] = mapped_column("60040")
+    UNK_34: Mapped[int] = mapped_column("60206")
+    UNK_35: Mapped[int] = mapped_column("60255")
+    UNK_36: Mapped[int] = mapped_column("60256")
+    UNK_37: Mapped[int] = mapped_column("60279")
+    UNK_38: Mapped[int] = mapped_column("60280")
+    UNK_39: Mapped[int] = mapped_column("60281")
+    UNK_40: Mapped[int] = mapped_column("60299")
+    latest_bulletin: Mapped[bytes] = mapped_column("60216")
+    UNK_42: Mapped[int] = mapped_column("60310")
+    UNK_43: Mapped[int] = mapped_column("60259")
+    UNK_44: Mapped[int] = mapped_column("60304")
+    UNK_45: Mapped[str] = mapped_column("60267")
+    UNK_46: Mapped[int] = mapped_column("60294")
+    UNK_47: Mapped[int] = mapped_column("60295")
+    UNK_48: Mapped[int] = mapped_column("60250")
+    UNK_49: Mapped[int] = mapped_column("60262")
+    UNK_50: Mapped[int] = mapped_column("60298")
+    UNK_51: Mapped[int] = mapped_column("60252")
+    UNK_52: Mapped[int] = mapped_column("60344")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupMember(Model):
+    """
+    群成员
+    group_info.db -> group_member
+    """
+    __tablename__ = "group_member3"
+    group_nickname: Mapped[str] = mapped_column("64003")
+    private_nickname: Mapped[str] = mapped_column("20002")
+    group_uin: Mapped[int] = mapped_column("60001", primary_key=True)
+    uid: Mapped[str] = mapped_column("1000", primary_key=True)
+    UNK_05: Mapped[str] = mapped_column("1001")
+    uin: Mapped[int] = mapped_column("1002")
+    UNK_07: Mapped[int] = mapped_column("64002")
+    UNK_08: Mapped[bytes] = mapped_column("64004")
+    UNK_09: Mapped[int] = mapped_column("64005")
+    UNK_10: Mapped[int] = mapped_column("64006")
+    join_time: Mapped[int] = mapped_column("64007")
+    last_message_time: Mapped[int] = mapped_column("64008")
+    last_ban_ends: Mapped[int] = mapped_column("64009")
+    admin: Mapped[int] = mapped_column("64010")
+    UNK_15: Mapped[int] = mapped_column("64011")
+    UNK_16: Mapped[int] = mapped_column("64012")
+    UNK_17: Mapped[int] = mapped_column("64013")
+    UNK_18: Mapped[int] = mapped_column("64017")
+    UNK_19: Mapped[int] = mapped_column("64015")
+    status: Mapped[int] = mapped_column("64016")
+    UNK_21: Mapped[int] = mapped_column("64018")
+    UNK_22: Mapped[int] = mapped_column("64034")
+    UNK_23: Mapped[int] = mapped_column("64020")
+    UNK_24: Mapped[int] = mapped_column("64021")
+    UNK_25: Mapped[int] = mapped_column("64022")
+    custom_badge: Mapped[str] = mapped_column("64023")
+    UNK_27: Mapped[int] = mapped_column("64024")
+    UNK_28: Mapped[int] = mapped_column("64025")
+    UNK_29: Mapped[int] = mapped_column("64026")
+    UNK_30: Mapped[int] = mapped_column("64027")
+    UNK_31: Mapped[int] = mapped_column("64028")
+    UNK_32: Mapped[str] = mapped_column("64029")
+    UNK_33: Mapped[int] = mapped_column("64030")
+    UNK_34: Mapped[int] = mapped_column("64031")
+    UNK_35: Mapped[int] = mapped_column("64032")
+    level: Mapped[int] = mapped_column("64035")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupLevelBadge(Model):
+    """
+    群等级头衔信息
+    group_info.db -> group_member_level_info
+    """
+    __tablename__ = "group_member_level_info"
+    uin: Mapped[int] = mapped_column("60001", primary_key=True)
+    group_level: Mapped[int] = mapped_column("67100")
+    UNK_3: Mapped[int] = mapped_column("67101")
+    UNK_4: Mapped[int] = mapped_column("67102")
+    badges: Mapped[bytes] = mapped_column("67103")
+    UNK_6: Mapped[int] = mapped_column("67104")
+
+
+@DatabaseManager.register_model("group_info")
+class GroupNotify(Model):
+    """
+    群通知
+    group_info.db -> group_notify_list
+    """
+    __tablename__ = "group_notify_list"
+    timestamp: Mapped[int] = mapped_column("61001")
+    type: Mapped[int] = mapped_column("61002")
+    status: Mapped[int] = mapped_column("61003")
+    group: Mapped[bytes] = mapped_column("61004")
+    operatee: Mapped[bytes] = mapped_column("61005")
+    operator: Mapped[bytes] = mapped_column("61006")
+    operator_info: Mapped[bytes] = mapped_column("61007")
+    operation_time: Mapped[int] = mapped_column("61008")
+    UNK_09: Mapped[bytes] = mapped_column("61009")
+    req_info: Mapped[str] = mapped_column("61010")
+    additional: Mapped[str] = mapped_column("61011")
