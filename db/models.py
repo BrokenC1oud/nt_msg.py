@@ -225,6 +225,47 @@ class FavEmojiInfo(Model):
 
 
 @DatabaseManager.register_model("emoji")
+class StickerPackage(Model):
+    """
+    market sticker package table
+    emoji.db -> market_emoticon_package_table
+    """
+    __tablename__ = "market_emoticon_package_table"
+    ID: Mapped[str] = mapped_column("80943", primary_key=True)
+    UNK_01: Mapped[int] = mapped_column("80944")
+    UNK_02: Mapped[str] = mapped_column("80945")
+    UNK_03: Mapped[str] = mapped_column("80946")
+    name: Mapped[str] = mapped_column("80947")
+    desc: Mapped[str] = mapped_column("80948")
+    UNK_04: Mapped[int] = mapped_column("80949")
+    UNK_05: Mapped[str] = mapped_column("80950")
+    UNK_06: Mapped[int] = mapped_column("80951")
+    UNK_07: Mapped[int] = mapped_column("80952")
+    UNK_08: Mapped[int] = mapped_column("80953")
+    UNK_09: Mapped[int] = mapped_column("80954")
+    UNK_10: Mapped[str] = mapped_column("80955")
+    UNK_11: Mapped[int] = mapped_column("80956")
+    UNK_12: Mapped[int] = mapped_column("80957")
+    UNK_13: Mapped[int] = mapped_column("80958")
+    UNK_14: Mapped[int] = mapped_column("80959")
+    UNK_15: Mapped[int] = mapped_column("80960")
+    UNK_16: Mapped[str] = mapped_column("80961")
+    UNK_17: Mapped[int] = mapped_column("80962")
+    UNK_18: Mapped[int] = mapped_column("80963")
+    UNK_19: Mapped[int] = mapped_column("80964")
+    UNK_20: Mapped[int] = mapped_column("80965")
+    UNK_21: Mapped[int] = mapped_column("80966")
+    UNK_21: Mapped[str] = mapped_column("80967")
+    UNK_22: Mapped[int] = mapped_column("80968")
+    UNK_23: Mapped[int] = mapped_column("80969")
+    UNK_24: Mapped[str] = mapped_column("80970")
+    UNK_25: Mapped[int] = mapped_column("80971")
+    UNK_26: Mapped[str] = mapped_column("80972")
+    UNK_27: Mapped[int] = mapped_column("80973")
+    UNK_28: Mapped[int] = mapped_column("80974")
+
+
+@DatabaseManager.register_model("emoji")
 class StickerMapping(Model):
     """
     market sticker table
