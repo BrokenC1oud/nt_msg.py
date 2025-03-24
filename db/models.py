@@ -20,6 +20,19 @@ __all__ = [
     "FavEmojiInfo",
     "StickerPackage",
     "StickerMapping",
+    "DoubtGroupNotifyList",
+    "GroupBulletin",
+    "GroupDetailInfo",
+    "GroupEssence",
+    "GroupList",
+    "GroupMember",
+    "GroupLevelBadge",
+    "GroupNotify",
+    "Buddy",
+    "BuddyRequest",
+    "BuddyCategory",
+    "BotProfile",
+    "BuddyProfile",
 ]
 
 
@@ -320,7 +333,7 @@ class DoubtGroupNotifyList(Model):
     group_info.db -> doubt_group_notify_list
     """
     __tablename__ = "doubt_group_notify_list"
-    timestamp: Mapped[int] = mapped_column("61001")
+    timestamp: Mapped[int] = mapped_column("61001", primary_key=True)
     type: Mapped[int] = mapped_column("61002")
     status: Mapped[int] = mapped_column("61003")
     group: Mapped[bytes] = mapped_column("61004")
@@ -613,7 +626,7 @@ class GroupNotify(Model):
     group_info.db -> group_notify_list
     """
     __tablename__ = "group_notify_list"
-    timestamp: Mapped[int] = mapped_column("61001")
+    timestamp: Mapped[int] = mapped_column("61001", primary_key=True)
     type: Mapped[int] = mapped_column("61002")
     status: Mapped[int] = mapped_column("61003")
     group: Mapped[bytes] = mapped_column("61004")

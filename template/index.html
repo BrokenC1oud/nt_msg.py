@@ -9,6 +9,7 @@
 
     <body>
         <div class="page_wrap">
+            <!-- header -->
             <div class="page_header">
                 <div class="content">
                     <div class="text bold">
@@ -19,13 +20,30 @@
             
             <div class="page_body chat_page">
                 <div class="history">
+                    <!-- date -->
                     <div class="message service" id="message-1">
                         <div class="body details">
-                            2024.10.20
+                            {{ date }}
                         </div>
                     </div>
 
-                    <div class="message default clearfix" id="message5603"></div>
+                    {% for message in messages %}
+                    <!-- message -->
+                    <div class="message default clearfix" id="message5603">
+                        <!-- avatar -->
+                        <div class="pull_left userpic_wrap">
+                            <div class="userpic userpic2" style="width: 42px; height: 42px">
+                                <div class="initials" style="line-height: 42px">没</div>
+                            </div>
+                        </div>
+                        <div class="body">
+                            <!-- time -->
+                            <div class="pull_right date details" title="23.03.2024 23:43:23 UTC+08:00">23:43</div>
+                            <div class="from_name">{{ message.sender }}</div>
+                            <div class="text">{{ message.content }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

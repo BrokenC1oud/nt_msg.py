@@ -3,6 +3,7 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.query import Query
 
 
 __all__ = ["DatabaseManager"]
@@ -32,7 +33,7 @@ class DatabaseManager:
     def __init__(self):
         pass
     
-    def group_messages(self):
+    def group_messages(self) -> Query:
         return self._sessions["nt_msg"].query(self._models["nt_msg"]["group_msg_table"])
 
 

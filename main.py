@@ -6,8 +6,7 @@ import db
 
 def main():
     dbman = db.DatabaseManager()
-    for _ in dbman.group_messages():
-        print(nt_msg.Message.from_db(_))
+    print(dbman.group_messages().filter_by(groupUin=974725670).count())
 
 
 if __name__ == "__main__":
