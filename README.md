@@ -17,17 +17,13 @@ decrypt your db files following [QQDecrypt](https://qq.sbcnm.top/) and place the
 ### ORM Representation
 
 - [ ] collection.db
-- [ ] emoji.db
+- [x] emoji.db
 - [ ] file_assistant.db
 - [ ] files_in_chat.db
-- [ ] group_info.db
+- [x] group_info.db
 - [ ] guild_msg.db
 - [ ] misc.db
 - [ ] nt_msg.db
-- [ ] profile_info.db
+- [x] profile_info.db
 - [ ] recent_contact.db
 - [ ] rich_media.db
-- [ ] collection.db
-- [ ] collection.db
-- [ ] collection.db
-- [ ] collection.db
