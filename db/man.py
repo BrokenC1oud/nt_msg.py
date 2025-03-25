@@ -11,8 +11,8 @@ __all__ = ["DatabaseManager"]
 
 class DatabaseManager:
     _models = defaultdict(defaultdict)
-    _loaded = set()
-    _sessions = {}
+    _loaded: set[str] = set()
+    _sessions: dict[str, Session] = {}
 
     @classmethod
     def register_model(cls, db_id: str) -> callable:
@@ -32,9 +32,18 @@ class DatabaseManager:
     
     def __init__(self):
         pass
+
+    def private_messages(self) -> Query:
+        return self._sessions["nt_msg"].query(self._models["nt_msg"]["c2c_msg_table"])
     
     def group_messages(self) -> Query:
         return self._sessions["nt_msg"].query(self._models["nt_msg"]["group_msg_table"])
+    
+    def buddy_info(self) -> Query:
+        return self._sessions["profile_info"].query(self._models["profile_info"]["profile_info_v6"])
+    
+    def get_buddy(self, *, uid: str, uin: int):
+        ...
 
 
 from .models import *

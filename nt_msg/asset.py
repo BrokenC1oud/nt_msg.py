@@ -1,0 +1,6 @@
+class File:
+    ...
+
+
+class Image(File):
+    ...

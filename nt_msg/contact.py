@@ -1,17 +1,30 @@
 from abc import ABC, abstractmethod
+import dataclasses
+
+from typing import Self
 
 from sqlalchemy.orm.query import Query
 
+from .asset import Image
+from db import DatabaseManager, models
 
-class Communicant(ABC):
+
+@dataclasses.dataclass
+class Contact(ABC):
+    uid: str
+    uin: int
+    name: str
+    avatar: Image
+    
     @abstractmethod
-    def messages(self) -> Query:
+    def messages(self, dbman: DatabaseManager) -> Query:
         raise NotImplementedError
 
 
-class Contact(Communicant):
-    ...
+class Buddy(Contact):
+    def messages(self, dbman: DatabaseManager) -> Query:
+        return dbman.private_messages().filter_by(contact_qq=self.uin)
 
 
-class Group(Communicant):
+class Group(Contact):
     ...

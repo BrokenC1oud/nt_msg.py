@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "blackboxprotobuf>=1.0.1",
+    "jinja2>=3.1.6",
     "lxml>=5.3.1",
     "pydantic>=2.10.6",
     "sqlalchemy>=2.0.38",
