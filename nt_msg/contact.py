@@ -1,12 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 import dataclasses
 
-from typing import Self
-
-from sqlalchemy.orm.query import Query
-
 from .asset import Image
-from db import DatabaseManager, models
 
 
 @dataclasses.dataclass

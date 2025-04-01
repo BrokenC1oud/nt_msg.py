@@ -1,46 +1,18 @@
-"""
-Relating everything takes time......
-"""
+import os
 
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
-from sqlalchemy import String, LargeBinary, Text
+from typing import Type
 
-from .man import DatabaseManager
+from sqlalchemy import String, LargeBinary, Text, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.orm.query import Query
 
-
-__all__ = [
-    "PrivateMessage",
-    "GroupMessage",
-    "NTUIDMapping",
-    "SystemEmoji",
-    "BottomEmoji",
-    "EmojiConfig",
-    "EmojiGroup",
-    "EmojiMiscData",
-    "FavEmojiInfo",
-    "StickerPackage",
-    "StickerMapping",
-    "DoubtGroupNotifyList",
-    "GroupBulletin",
-    "GroupDetailInfo",
-    "GroupEssence",
-    "GroupList",
-    "GroupMember",
-    "GroupLevelBadge",
-    "GroupNotify",
-    "Buddy",
-    "BuddyRequest",
-    "BuddyCategory",
-    "BotProfile",
-    "BuddyProfile",
-]
+from .exception import DbNotPresentException, UnmatchModelException
 
 
 class Model(DeclarativeBase):
     ...
 
 
-@DatabaseManager.register_model("nt_msg")
 class PrivateMessage(Model):
     """
     Private Message Table
@@ -89,7 +61,6 @@ class PrivateMessage(Model):
     UNK_35: Mapped[int] = mapped_column("40084")
 
 
-@DatabaseManager.register_model("nt_msg")
 class GroupMessage(Model):
     """
     Group Message Table
@@ -135,7 +106,6 @@ class GroupMessage(Model):
     UNK_35: Mapped[int] = mapped_column("40084")
 
 
-@DatabaseManager.register_model("nt_msg")
 class NTUIDMapping(Model):
     """
     qqnt uid mapping table
@@ -148,7 +118,6 @@ class NTUIDMapping(Model):
     qq: Mapped[int] = mapped_column("1002")
 
 
-@DatabaseManager.register_model("emoji")
 class SystemEmoji(Model):
     """
     QQ 默认表情数据
@@ -176,7 +145,6 @@ class SystemEmoji(Model):
     apng_link: Mapped[str] = mapped_column("81230")
 
 
-@DatabaseManager.register_model("emoji")
 class BottomEmoji(Model):
     """
     收藏的原创表情
@@ -187,7 +155,6 @@ class BottomEmoji(Model):
     data: Mapped[bytes] = mapped_column("81322")
 
 
-@DatabaseManager.register_model("emoji")
 class EmojiConfig(Model):
     """
     QQ 表情配置
@@ -199,7 +166,6 @@ class EmojiConfig(Model):
     data: Mapped[str] = mapped_column("80403")
 
 
-@DatabaseManager.register_model("emoji")
 class EmojiGroup(Model):
     """
     QQ 表情分组
@@ -209,7 +175,6 @@ class EmojiGroup(Model):
     data: Mapped[bytes] = mapped_column("81387", primary_key=True)
 
 
-@DatabaseManager.register_model("emoji")
 class EmojiMiscData(Model):
     """
     QQ 表情杂项数据
@@ -220,7 +185,6 @@ class EmojiMiscData(Model):
     data: Mapped[bytes] = mapped_column("81398")
 
 
-@DatabaseManager.register_model("emoji")
 class FavEmojiInfo(Model):
     """
     QQ 收藏表情信息
@@ -248,7 +212,6 @@ class FavEmojiInfo(Model):
     desc_2: Mapped[str] = mapped_column("80225")
 
 
-@DatabaseManager.register_model("emoji")
 class StickerPackage(Model):
     """
     market sticker package table
@@ -289,7 +252,6 @@ class StickerPackage(Model):
     UNK_29: Mapped[int] = mapped_column("80974")
 
 
-@DatabaseManager.register_model("emoji")
 class StickerMapping(Model):
     """
     market sticker table
@@ -326,7 +288,6 @@ class StickerMapping(Model):
     UNK_21: Mapped[str] = mapped_column("80603", nullable=True)  # always NULL
 
 
-@DatabaseManager.register_model("group_info")
 class DoubtGroupNotifyList(Model):
     """
     过滤群通知
@@ -346,7 +307,6 @@ class DoubtGroupNotifyList(Model):
     additional: Mapped[str] = mapped_column("61011")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupBulletin(Model):
     """
     群公告(仅最新)
@@ -357,7 +317,6 @@ class GroupBulletin(Model):
     bulletin: Mapped[bytes] = mapped_column("64205")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupDetailInfo(Model):
     """
     群聊更多信息
@@ -479,7 +438,6 @@ class GroupDetailInfo(Model):
     UNK_113: Mapped[int] = mapped_column("60344")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupEssence(Model):
     """
     群精华消息
@@ -498,7 +456,6 @@ class GroupEssence(Model):
     UNK_10: Mapped[int] = mapped_column("67509")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupList(Model):
     """
     群列表
@@ -559,7 +516,6 @@ class GroupList(Model):
     UNK_52: Mapped[int] = mapped_column("60344")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupMember(Model):
     """
     群成员
@@ -604,7 +560,6 @@ class GroupMember(Model):
     level: Mapped[int] = mapped_column("64035")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupLevelBadge(Model):
     """
     群等级头衔信息
@@ -619,7 +574,6 @@ class GroupLevelBadge(Model):
     UNK_6: Mapped[int] = mapped_column("67104")
 
 
-@DatabaseManager.register_model("group_info")
 class GroupNotify(Model):
     """
     群通知
@@ -639,7 +593,6 @@ class GroupNotify(Model):
     additional: Mapped[str] = mapped_column("61011")
 
 
-@DatabaseManager.register_model("profile_info")
 class Buddy(Model):
     """
     好友信息
@@ -652,7 +605,6 @@ class Buddy(Model):
     category: Mapped[int] = mapped_column("25007")
 
 
-@DatabaseManager.register_model("profile_info")
 class BuddyRequest(Model):
     """
     好友通知
@@ -686,7 +638,6 @@ class BuddyRequest(Model):
     UNK_25: Mapped[int] = mapped_column("21511")
 
 
-@DatabaseManager.register_model("profile_info")
 class BuddyCategory(Model):
     """
     好友分组
@@ -703,7 +654,6 @@ class BuddyCategory(Model):
     UNK_8: Mapped[int] = mapped_column("25015")
 
 
-@DatabaseManager.register_model("profile_info")
 class BotProfile(Model):
     """
     机器人信息
@@ -775,7 +725,6 @@ class BotProfile(Model):
     UNK_63: Mapped[int] = mapped_column("320063")
 
 
-@DatabaseManager.register_model("profile_info")
 class BuddyProfile(Model):
     """
     好友信息
@@ -825,3 +774,65 @@ class BuddyProfile(Model):
     UNK_41: Mapped[bytes] = mapped_column("24105")
     UNK_42: Mapped[int] = mapped_column("24110")
     UNK_43: Mapped[int] = mapped_column("24111")
+
+
+_models = {
+    "nt_msg": [
+        PrivateMessage,
+        GroupMessage,
+        NTUIDMapping,
+    ],
+    "emoji": [
+        SystemEmoji,
+        BottomEmoji,
+        EmojiConfig,
+        EmojiGroup,
+        EmojiMiscData,
+        FavEmojiInfo,
+        StickerPackage,
+        StickerMapping,
+    ],
+    "group_info": [
+        DoubtGroupNotifyList,
+        GroupBulletin,
+        GroupDetailInfo,
+        GroupEssence,
+        GroupList,
+        GroupMember,
+        GroupLevelBadge,
+        GroupNotify,
+    ],
+    "profile_info": [
+        Buddy,
+        BuddyRequest,
+        BuddyCategory,
+        BotProfile,
+        BuddyProfile,
+    ]
+}
+
+
+class DatabaseManager:
+    _capacity: list[str] = []
+    _sessions: dict[str, Session] = []
+
+    def __init__(self):
+        for _ in _models:
+            if os.path.exists(f"./{_}.decrypt.db"):
+                self._capacity.append(_)
+
+        for _ in self._capacity:
+            self._sessions[_] = Session(create_engine(f"sqlite:///./{_}.decrypt.db?immutable=1"))
+
+    def _get_session(self, file: str, model: Type[Model]) -> Query:
+        if file not in self._capacity:
+            raise DbNotPresentException("Database file not found in current directory.")
+        if model not in _models[file]:
+            raise UnmatchModelException("Requesting model from an unmatched database file")
+        return self._sessions[file].query(model)
+    
+    def private_message(self) -> Query:
+        return self._get_session("nt_msg", PrivateMessage)
+    
+    def group_message(self) -> Query:
+        return self._get_session("nt_msg", GroupMessage)
